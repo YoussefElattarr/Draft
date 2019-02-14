@@ -5,31 +5,33 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {
     ListView listView;
+    String[] listitems = {"Android", "iPhone", "Windows", "Blackberry", "Linux"};
+    int[] images = {R.drawable.image1,
+            R.drawable.image2,
+            R.drawable.image3,
+            R.drawable.image4,
+            R.drawable.image5};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
         listView=(ListView) findViewById(R.id.list);
-        ArrayList<String> arrayList = new ArrayList<String>();
-        arrayList.add("Android");
-        arrayList.add("iPhone");
-        arrayList.add("Windows");
-        arrayList.add("Blackberry");
-        arrayList.add("Linux");
-       // String[] listitems = {"Android", "iPhone", "Windows", "Blackberry", "Linux"};
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1
-                ,arrayList);
-
-        listView.setAdapter(arrayAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        CustomAdaptor customAdaptor = new CustomAdaptor();
+        listView.setAdapter(customAdaptor);
+        String[] listitems = {"Android", "iPhone", "Windows", "Blackberry", "Linux"};
+       listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(ListActivity.this, DeviceDetailActivity.class);
@@ -37,6 +39,34 @@ public class ListActivity extends AppCompatActivity {
             }
         });
 
+    }
+    class CustomAdaptor extends BaseAdapter{
+
+        @Override
+        public int getCount() {
+            return images.length;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View view = getLayoutInflater().inflate(R.layout.customlayout,null);
+            ImageView imageView = (ImageView) view.findViewById(R.id.imageView);
+            TextView textView = (TextView) view.findViewById(R.id.textView);
+            imageView.setImageResource(images[position]);
+            textView.setText(listitems[position]);
+
+            return view;
+        }
     }
 
 }
